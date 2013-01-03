@@ -7,6 +7,12 @@ class PortfoliosController < InheritedResources::Base
     @portfolio.assets.build
   end
 
+  def edit
+    @portfolio = current_user.portfolios.find params[:id]
+    @portfolio.assets.build
+  end
+
+
   protected
 
     def begin_of_association_chain

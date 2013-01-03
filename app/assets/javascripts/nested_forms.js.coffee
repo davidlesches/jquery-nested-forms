@@ -11,10 +11,9 @@ jQuery ($) ->
   $(document).ready ->
     if $('.duplicatable_nested_form').length
 
-      nestedForm = $('.duplicatable_nested_form').first().clone()
-      formsOnPage = 0
+      nestedForm = $('.duplicatable_nested_form').last().clone()
 
-      $(".destroy_duplicate_nested_form:first-child").remove()
+      $(".destroy_duplicate_nested_form:first").remove()
 
       $('.destroy_duplicate_nested_form').live 'click', (e) ->
         e.preventDefault()
@@ -25,21 +24,20 @@ jQuery ($) ->
 
         lastNestedForm = $('.duplicatable_nested_form').last()
         newNestedForm  = $(nestedForm).clone()
-
-        formsOnPage++
+        formsOnPage    = $('.duplicatable_nested_form').length
 
         $(newNestedForm).find('label').each ->
           oldLabel = $(this).attr 'for'
-          newLabel = oldLabel.replace '_0_', "_#{formsOnPage}_"
+          newLabel = oldLabel.replace(new RegExp(/_[0-9]+_/), "_#{formsOnPage}_")
           $(this).attr 'for', newLabel
 
         $(newNestedForm).find('select, input').each ->
           oldId = $(this).attr 'id'
-          newId = oldId.replace '_0_', "_#{formsOnPage}_"
+          newId = oldId.replace(new RegExp(/_[0-9]+_/), "_#{formsOnPage}_")
           $(this).attr 'id', newId
 
           oldName = $(this).attr 'name'
-          newName = oldName.replace '[0]', "[#{formsOnPage}]"
+          newName = oldName.replace(new RegExp(/\[[0-9]+\]/), "[#{formsOnPage}]")
           $(this).attr 'name', newName
 
         $( newNestedForm ).insertAfter( lastNestedForm )

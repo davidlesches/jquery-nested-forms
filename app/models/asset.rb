@@ -7,4 +7,10 @@ class Asset < ActiveRecord::Base
 
   attr_accessible :amount, :long_short, :stock_id, :user_id
 
+  after_create :destroy_on_nil
+
+  def destroy_on_nil
+    self.destroy if self.stock.nil?
+  end
+
 end
