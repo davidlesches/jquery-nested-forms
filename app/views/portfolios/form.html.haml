@@ -1,0 +1,14 @@
+= simple_form_for @portfolio do |f|
+  = f.input :title, label: 'Portfolio Title'
+
+  .duplicatable_nested_form
+    = f.simple_fields_for :assets do |assets_form|
+      = assets_form.association :stock
+      = assets_form.input :amount, :input_html => { min: 0 }
+      = assets_form.input :long_short, label: 'Long / Short', collection: ['Long', 'Short']
+      .input= link_to 'Remove', '', :class => 'destroy_duplicate_nested_form'
+    .clear
+
+  = link_to 'Add Another Stock', '', :class => 'duplicate_nested_form'
+
+  = f.submit
